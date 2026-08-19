@@ -24,15 +24,30 @@ public class Controlador {
                     agregarAtleta(nuevoAtleta);
                     break;
                 case 2:
-                    vista.mostrarAtletas(atleta);
+                    nuevoIntento();
                     break;
                 case 3:
+                    consularTiempos();
+                    break;
+                case 4:
+                    consultarIntentos();
+                    break;
+                case 5:
+                    modificarTiempo();
+                    break;
+                case 6:
+                    mejorPeor();
+                    break;
+                case 7:
+                    consultarDisponibles();
+                    break;
+                case 8:
                     vista.mostrarMensaje("Saliendo del programa...");
                     break;
                 default:
                     vista.mostrarMensaje("Opción inválida. Intente nuevamente.");
             }
-        } while (opcion != 3);
+        } while (opcion != 8);
     }
 
     public void agregarAtleta(Atleta atleta) {
