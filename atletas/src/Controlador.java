@@ -1,15 +1,11 @@
-import java.util.Random;
-
 public class Controlador {
     private Atleta[] atleta;
     private Vista vista;
     private Atleta atletaActual;
-    private Random random;
 
     public Controlador() {
         this.atleta = new Atleta[10];
         this.vista = new Vista();
-        this.random = new Random();
         this.atletaActual = null;
 
     }
@@ -36,46 +32,45 @@ public class Controlador {
                     modificarTiempo();
                     break;
                 case 6:
-                    mejorPeor();
+                    promedio();
                     break;
                 case 7:
-                    consultarDisponibles();
+                    mejorPeor();
                     break;
                 case 8:
-                    vista.mostrarMensaje("Saliendo del programa...");
+                    consultarDisponibles();
+                    break;
+                case 9:
+                    salir();
                     break;
                 default:
                     vista.mostrarMensaje("Opción inválida. Intente nuevamente.");
             }
-        } while (opcion != 8);
+        } while (opcion != 9);
     }
 
     public void agregarAtleta(Atleta atleta) {
-        for (int i = 0; i < this.atleta.length; i++) {
-            if (this.atleta[i] == null) {
-                this.atleta[i] = atleta;
-                break;
-            }
+
+    for (int i = 0; i < this.atleta.length; i++) {
+
+        if (this.atleta[i] == null) {
+            this.atleta[i] = atleta;
+            this.atletaActual = atleta;
+            break;
         }
     }
-    String[] nombres = {
-        "Juan", 
-        "María", 
-        "Pedro", 
-        "Ana", 
-        "Luis", 
-        "Carmen", 
-        "Jorge", 
-        "Lucía", 
-        "Carlos", 
-        "Sofía"
-        
-    };
+}
+if (position == -1) {
+    System.out.println("No hay espacio para registrar más atletas.");
+    return;
+}
 
-    String nombre = nombres[random.nextInt(nombres.length)];
-    int edad = random.nextInt(23) + 18; // Genera una edad entre 18 y 40
-    int numeroParticipante = random.nextInt(1000) + 1; // Genera un número de participante entre 1 y 1000
-    Atleta atleta = new Atleta(nombre, edad, numeroParticipante);
+    public void registrarAtleta(int posicion) {
+        Atleta nuevoAtleta = vista.leerAtleta();
+        atleta[posicion] = nuevoAtleta;
+        atletaActual = nuevoAtleta;
+        System.out.println("Atleta registrado correctamente.");
+}
 
     public void nuevoIntento() {
         if (atletaActual == null) {
@@ -89,6 +84,7 @@ public class Controlador {
             vista.mostrarMensaje("No se pudo registrar el intento. Intente nuevamente.");
         }
     }
+
     public void consularTiempos() {
         if (atletaActual == null) {
             System.out.println("Registre un atleta antes de consultar los tiempos.");
@@ -97,6 +93,7 @@ public class Controlador {
         int[] tiempos = atletaActual.getTiempos();
         vista.mostrarTiempos(tiempos);
     }
+
     public void consultarIntentos() {
         if (atletaActual == null) {
             System.out.println("Registre un atleta antes de consultar los intentos.");
@@ -105,6 +102,7 @@ public class Controlador {
         int intentos = atletaActual.getIntentos();
         vista.mostrarIntentos(intentos);
     }
+
     public void modificarTiempo() {
         if (atletaActual == null) {
             System.out.println("Registre un atleta antes de modificar un tiempo.");
@@ -119,6 +117,7 @@ public class Controlador {
             vista.mostrarMensaje("No se pudo modificar el tiempo. Intente nuevamente.");
         }
     }
+
     public void mejorPeor() {
         if (atletaActual == null) {
             System.out.println("Registre un atleta antes de consultar el mejor y peor tiempo.");
@@ -128,6 +127,7 @@ public class Controlador {
         int peorTiempo = atletaActual.getPeorTiempo();
         vista.mostrarMejorPeor(mejorTiempo, peorTiempo);
     }
+
     public void promedio() {
         if (atletaActual == null) {
             System.out.println("Registre un atleta antes de consultar el promedio de tiempos.");
@@ -136,21 +136,22 @@ public class Controlador {
         double promedio = atletaActual.getPromedioTiempos();
         vista.mostrarPromedio(promedio);
     }
+
     public void consultarDisponibles() {
-        if (atletaActual == null) {
-            System.out.println("Registre un atleta antes de consultar los intentos disponibles.");
-            return;
-        }
-        vista.mostrarIntentosRealizados(
-            atletaActual.getintentosRealizados()
-        );
-        vista.mostrarIntentosRestantes(
-            atletaActual.getintentosRestantes()
-        );
-        vista.mostrarDisponibles(
-            atletaActual.getintentosDisponibles()
-        );
+
+    if (atletaActual == null) {
+        System.out.println("Registre un atleta antes de consultar los intentos.");
+        return;
     }
+
+    int intentosRealizados = atletaActual.intentosRealizados();
+    int intentosRestantes = atletaActual.intentosRestantes();
+
+    vista.mostrarDisponibles(
+        intentosRealizados,
+        intentosRestantes
+    );
+}
     public void salir() {
         System.out.println("Programa finalizado. ¡Hasta luego!");
     }
