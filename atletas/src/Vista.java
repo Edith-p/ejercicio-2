@@ -4,7 +4,7 @@ public class Vista{
     private Scanner sc = new Scanner(System.in);
     
     public int mostrarMenu() {
-      System.out.println("Menú de los tiempos del atleta");
+      System.out.println("--------Menú de los tiempos del atleta---------");
       System.out.println("1. Ingresar un nuevo atleta");
       System.out.println("2. Ingresar un nuevo intento");
       System.out.println("3. Consultar los tiempos registrados");
@@ -36,19 +36,18 @@ public class Vista{
 
     public int solicitarTiempo() {
       System.out.println("Ingresa el tiempo a registrar en segundos: ");
-      return Integer.parseInt(sc.nextLine());
+      int tiempo = Integer.parseInt(sc.nextLine());
+
+      if (tiempo <=0){
+        System.out.println("Debe ser un tiempo mayor que 0");
+      } return tiempo; 
     }
 
     public int pedirNumeroIntento() {
       System.out.println("Ingresa el intento a consultar: ");
       return Integer.parseInt(sc.nextLine());
     }
-    //Creo que también podría funcionar algo así:
-    //public void mostrarIntentosRestantes(Atleta atleta){ 
-      //int intentoRestanAtleta = atleta.intentosRestantes(); 
-     // System.out.println("Intentos restantes: " + intentoRestanAtleta); 
-   // }
-
+    
     public void mostrarIntentosRestantes( int intentosRestantes){ 
       System.out.println("Intentos restantes: " + intentosRestantes); 
     }
@@ -58,31 +57,53 @@ public class Vista{
     }
 
     public void mostrarMejorTiempo(int mejorTiempo) {
+      if (mejorTiempo == 0){
+        System.out.println("No hay registros");
+      }else {
       System.out.println("El mejor tiempo registrado es: " + mejorTiempo); 
+      }
     }
 
     public void mostrarPeorTiempo(int peorTiempo){
+      if (peorTiempo == 0){
+        System.out.println("No hay registros");
+      }else {
       System.out.println("El tiempo más alto registrado es: " + peorTiempo);
+      }
     }
 
+
     public void mostrarPromedioIntentos( int promedioIntentos){
-      System.out.println("Promedio de los tiempos registrados: " + promedioIntentos);
+      if (promedioIntentos == 0){
+        System.out.println("No puede calcularse el promedio sin registros");
+      } else {
+        System.out.println("Promedio de los tiempos registrados: " + promedioIntentos);
+      }
+      
     }
 
     public void mostrarTiempos( int[] intentos, int cantidadIntentos){
-      for (int i = 0; i < cantidadIntentos; i++) {
-        System.out.println("Intento seleccionado: " + (i +1));
-        System.out.println("Tiempos registrados: " + intentos[i]);
-
+      if (cantidadIntentos ==0){
+        System.out.println("No hay tiempos registrados aún");
+      }else {
+        for (int i = 0; i < cantidadIntentos; i++) {
+          System.out.println("Intento seleccionado: " + (i +1));
+          System.out.println("Tiempos registrados: " + intentos[i]);
+      }  
       }
     
     }
 
     public void mostrarIntento(int numeroIntento, int tiempo){
-      System.out.println("El intento numero " + numeroIntento);
-      System.out.println("tiene registrado: " + tiempo + " segundos");
+      if (tiempo > 0){
+        System.out.println("El intento numero " + numeroIntento);
+        System.out.println("tiene registrado: " + tiempo + " segundos");
+      } else {
+        System.out.println("No existe registro en ese intento");
+      }
+      
     }
-// cambiar parametro
+
     public void mostrarDisponibles(int intentosRealizados, int intentosRestantes) {
       System.out.println("Los intentos realizados son: " + intentosRealizados );
       System.out.println("Los intentos restantes son: " + intentosRestantes);

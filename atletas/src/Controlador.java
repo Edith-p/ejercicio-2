@@ -4,7 +4,7 @@ public class Controlador {
     private Atleta atletaActual;
 
     public Controlador() {
-        this.atleta = new Atleta[10];
+        this.atleta = new Atleta[5];
         this.vista = new Vista();
         this.atletaActual = null;
 
@@ -16,143 +16,131 @@ public class Controlador {
             opcion = vista.mostrarMenu();
             switch (opcion) {
                 case 1:
-                    Atleta nuevoAtleta = vista.leerDatosAtleta();
-                    agregarAtleta(nuevoAtleta);
+                    nuevoAtleta(); 
                     break;
                 case 2:
                     nuevoIntento();
                     break;
                 case 3:
-                    consularTiempos();
+                    consultaTiempos();
                     break;
                 case 4:
-                    consultarIntentos();
+                    consultarIntento();
                     break;
                 case 5:
                     modificarTiempo();
                     break;
                 case 6:
-                    promedio();
+                    consultaPromedioIntentos();
                     break;
                 case 7:
                     mejorPeor();
                     break;
                 case 8:
-                    consultarDisponibles();
+                    consultaDisponibles();
                     break;
                 case 9:
                     salir();
                     break;
                 default:
-                    vista.mostrarMensaje("Opción inválida. Intente nuevamente.");
+                    System.out.println("Opcion invalida. Intentalo nuevamente");; 
             }
         } while (opcion != 9);
     }
 
-    public void agregarAtleta(Atleta atleta) {
+    public void nuevoAtleta() {
+        Atleta nuevoAtleta = vista.leerAtleta();
+        for (int i = 0; i < this.atleta.length; i++) {
 
-    for (int i = 0; i < this.atleta.length; i++) {
-
-        if (this.atleta[i] == null) {
-            this.atleta[i] = atleta;
-            this.atletaActual = atleta;
-            break;
+            if (this.atleta[i] == null) {
+                this.atleta[i] = nuevoAtleta;
+                this.atletaActual = nuevoAtleta;
+                break;
+            }
         }
     }
-}
-if (position == -1) {
-    System.out.println("No hay espacio para registrar más atletas.");
-    return;
-}
-
-    public void registrarAtleta(int posicion) {
-        Atleta nuevoAtleta = vista.leerAtleta();
-        atleta[posicion] = nuevoAtleta;
-        atletaActual = nuevoAtleta;
-        System.out.println("Atleta registrado correctamente.");
-}
 
     public void nuevoIntento() {
         if (atletaActual == null) {
-            System.out.println("Registre un atleta antes de realizar un intento.");
             return;
         }
         int tiempo = vista.solicitarTiempo();
-        if (atletaActual.registrarIntento(tiempo)) {
-            vista.mostrarMensaje("Intento registrado correctamente.");
-        } else {
-            vista.mostrarMensaje("No se pudo registrar el intento. Intente nuevamente.");
-        }
+        atletaActual.agregarIntento(tiempo);
+    
     }
 
-    public void consularTiempos() {
+    public void consultaTiempos() {
         if (atletaActual == null) {
-            System.out.println("Registre un atleta antes de consultar los tiempos.");
+            
             return;
         }
-        int[] tiempos = atletaActual.getTiempos();
-        vista.mostrarTiempos(tiempos);
+        int[] intentos = atletaActual.getIntentos();
+        int cantidadIntentos = atletaActual.getCantidadIntentos(); 
+        vista.mostrarTiempos(intentos, cantidadIntentos);
     }
 
-    public void consultarIntentos() {
+    public void consultarIntento() {
         if (atletaActual == null) {
-            System.out.println("Registre un atleta antes de consultar los intentos.");
             return;
         }
-        int intentos = atletaActual.getIntentos();
-        vista.mostrarIntentos(intentos);
-    }
+        int numeroIntento = vista.pedirNumeroIntento();
+        int tiempo = atletaActual.getIntento(numeroIntento); 
+        vista.mostrarIntento(numeroIntento, tiempo);
+    } 
+        
+    
 
     public void modificarTiempo() {
         if (atletaActual == null) {
-            System.out.println("Registre un atleta antes de modificar un tiempo.");
             return;
         }
-        int numeroIntento = vista.solicitarNumeroIntento();
-        int tiempoNuevo = vista.solicitarTiempo();
-        
-        if (atletaActual.modificarTiempo(numeroIntento, tiempoNuevo)) {
-            vista.mostrarMensaje("Tiempo modificado correctamente.");
-        } else {
-            vista.mostrarMensaje("No se pudo modificar el tiempo. Intente nuevamente.");
+        int numeroIntento = vista.pedirNumeroIntento();
+        int tiempoActual = atletaActual.getIntento(numeroIntento);
+
+        if (tiempoActual== 0){
+            vista.mostrarIntento(numeroIntento, tiempoActual);
+            return; 
         }
+        int tiempoNuevo = vista.solicitarTiempo();
+        atletaActual.modificarIntento(numeroIntento, tiempoNuevo);
+    }
+    
+
+
+    public void consultaPromedioIntentos() {
+        if (atletaActual == null) {
+            
+            return;
+        }
+        int promedio = atletaActual.promedioIntentos();
+        vista.mostrarPromedioIntentos(promedio);
     }
 
     public void mejorPeor() {
         if (atletaActual == null) {
-            System.out.println("Registre un atleta antes de consultar el mejor y peor tiempo.");
             return;
         }
-        int mejorTiempo = atletaActual.getMejorTiempo();
-        int peorTiempo = atletaActual.getPeorTiempo();
-        vista.mostrarMejorPeor(mejorTiempo, peorTiempo);
+        int mejorTiempo = atletaActual.mejorTiempo();
+        int peorTiempo = atletaActual.peorTiempo();
+        vista.mostrarMejorTiempo(mejorTiempo);
+        vista.mostrarPeorTiempo(peorTiempo);
     }
 
-    public void promedio() {
+    public void consultaDisponibles() {
+
         if (atletaActual == null) {
-            System.out.println("Registre un atleta antes de consultar el promedio de tiempos.");
             return;
         }
-        double promedio = atletaActual.getPromedioTiempos();
-        vista.mostrarPromedio(promedio);
+
+        int intentosRealizados = atletaActual.intentosRealizados();
+        int intentosRestantes = atletaActual.intentosRestantes();
+
+        vista.mostrarDisponibles(
+            intentosRealizados,
+            intentosRestantes
+        );
     }
-
-    public void consultarDisponibles() {
-
-    if (atletaActual == null) {
-        System.out.println("Registre un atleta antes de consultar los intentos.");
-        return;
-    }
-
-    int intentosRealizados = atletaActual.intentosRealizados();
-    int intentosRestantes = atletaActual.intentosRestantes();
-
-    vista.mostrarDisponibles(
-        intentosRealizados,
-        intentosRestantes
-    );
-}
     public void salir() {
-        System.out.println("Programa finalizado. ¡Hasta luego!");
+        
     }
 }

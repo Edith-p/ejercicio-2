@@ -23,7 +23,7 @@ public class Atleta {
         return numeroParticipante; 
     }
 
-//retornar el arreglo, hicimos el cambio porque al recibirlo como parametro no funcionó como esperabamos (se nos olvidó ponerlo en el uml) 
+//retornar el arreglo, hicimos el cambio porque al recibirlo como parametro no funcionó como esperabamos (ya actualizado en el analisis y uml) 
     public int[] getIntentos() {
         return intentos; 
     }
